@@ -1,0 +1,149 @@
+{
+  "version": 2,
+  "projects": {
+    "nativescript-mobile": {
+      "projectType": "application",
+      "root": "apps/nativescript-mobile/",
+      "sourceRoot": "apps/nativescript-mobile/src",
+      "prefix": "",
+      "targets": {
+        "build": {
+          "executor": "@nativescript/nx:build",
+          "options": {
+            "noHmr": true,
+            "production": true,
+            "uglify": true,
+            "release": true,
+            "forDevice": true
+          },
+          "configurations": {
+            "prod": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/nativescript-mobile/src/environments/environment.ts",
+                  "with": "apps/nativescript-mobile/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "ios": {
+          "executor": "@nativescript/nx:build",
+          "options": {
+            "platform": "ios"
+          },
+          "configurations": {
+            "prod": {
+              "combineWithConfig": "build:prod"
+            }
+          }
+        },
+        "android": {
+          "executor": "@nativescript/nx:build",
+          "options": {
+            "platform": "android"
+          },
+          "configurations": {
+            "prod": {
+              "combineWithConfig": "build:prod"
+            }
+          }
+        },
+        "clean": {
+          "executor": "@nativescript/nx:build",
+          "options": {
+            "clean": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/nativescript-mobile/**/*.ts",
+              "apps/nativescript-mobile/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/nativescript-mobile/jest.config.js",
+            "tsConfig": "apps/nativescript-mobile/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/nativescript-mobile/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "nativescript-buttons": {
+      "root": "libs/nativescript-buttons",
+      "sourceRoot": "libs/nativescript-buttons/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/nativescript-buttons/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/nativescript-buttons"
+          ],
+          "options": {
+            "jestConfig": "libs/nativescript-buttons/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "ngtest": {
+      "projectType": "library",
+      "root": "libs/ngtest",
+      "sourceRoot": "libs/ngtest/src",
+      "prefix": "freshtest",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ngtest/src/**/*.ts",
+              "libs/ngtest/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/ngtest"
+          ],
+          "options": {
+            "jestConfig": "libs/ngtest/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  }
+}
